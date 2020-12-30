@@ -1,0 +1,24 @@
+ul.page {
+    display: inline-block;
+    padding: 0;
+    margin: 0;
+}
+ul.page li {
+	display: inline;
+	list-style: none;
+}
+ul.page li a {
+    color: black;
+    float: left;
+    padding: 10px 16px;
+    text-decoration: none;
+    border-radius: 5px;
+}
+ul.page li a.acti {
+    background-color: #4CAF50;
+    color: white;
+    border-radius: 5px;
+}
+ul.page li a:hover:not(.acti) {
+	background-color: #ddd;
+	}

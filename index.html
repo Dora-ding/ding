@@ -1,0 +1,88 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+		<link rel="stylesheet" type="text/css" href="css/dgq.css" />
+		<script type="text/javascript" src="js/jquery-2.1.0.js"></script>
+		<title>美图浏览</title>
+	</head>
+	<body>
+		<table class="table table-striped table-bordered table-hover">			
+			<tbody id="tb">				
+			</tbody>		
+		</table>		
+		<div id="" align="center">
+			<ul class="page" id="u1">
+			  <li><a href="#" ><span onclick="pageOn()">上一页</span></a></li>
+			  <li onclick="search(this)" id="1"><a class="acti" href="#" >第1页</a></li>
+			  <li onclick="search(this)" id="2"><a href="#" >第2页</a></li>
+			  <li onclick="search(this)" id="3"><a href="#" >第3页</a></li>
+			  <li onclick="search(this)" id="4"><a href="#" >第4页</a></li>
+			  <li onclick="search(this)" id="5"><a href="#" >第5页</a></li>
+			  <li onclick="search(this)" id="6"><a href="#" >第6页</a></li>
+			  <li onclick="search(this)" id="7"><a href="#" >第7页</a></li>
+			  <li onclick="search(this)" id="8"><a href="#" >第8页</a></li>
+			  <li onclick="search(this)" id="9"><a href="#" >第9页</a></li>
+			  <li onclick="search(this)" id="10"><a href="#" >第10页</a></li>
+			  <li><a href="#" ><span onclick="pageDown()">下一页</span></a></li>
+			</ul>
+		</div>  
+		
+		<script type="text/javascript">
+			var page=1;
+			document.onreadystatechange = function () {   
+			    if(document.readyState=="complete") {  
+					var obj=document.getElementById(page);
+			        search(obj);
+			         }   
+			    } 
+			function pageOn(){
+				if(page>1){
+					page--;
+					var obj=document.getElementById(page++);
+					search(obj);
+				}else{
+					alert("已到第一页")
+				}
+				
+			}
+			
+			function pageDown(){
+				if(page<10){
+					page++;
+					var obj=document.getElementById(page--);
+					search(obj);
+				}else{
+					alert("已到最后一页")
+				}
+				
+			}
+			
+			function search(obj){
+				document.getElementById(page).childNodes[0].setAttribute("class","");
+				obj.childNodes[0].setAttribute("class","acti");				
+				page=obj.id;
+				
+				$.ajax({
+					type:"POST",
+					url:"https://api.apiopen.top/getImages",
+					data:"page="+page+"&count="+20,
+					success:function(data){
+						var result=data.result;
+						var tb=$("#tb");
+						tb.html("");
+						for(var index=0;index<result.length;index=index+4){
+							var str="<tr><td><a href='"+result[index].img+"' target='_blank'><img class='img-thumbnail' width='150px' height='80px' src='"+result[index].img+"'/></a></td>"+
+							"<td><a href='"+result[index+1].img+"' target='_blank'><img class='img-thumbnail' width='150px' height='80px'  src='"+result[index+1].img+"'/></a></td>"+
+							"<td><a href='"+result[index+2].img+"' target='_blank'><img class='img-thumbnail' width='150px' height='80px'  src='"+result[index+2].img+"'/></a></td>"+
+							"<td><a href='"+result[index+3].img+"' target='_blank'><img class='img-thumbnail' width='150px' height='80px'  src='"+result[index+3].img+"'/></a></td></tr>"	
+							tb.append(str);
+						}					
+					}					
+					});				
+			}
+		</script>
+	</body>
+</html>
